@@ -79,7 +79,7 @@ def main():
 
     
 
-    with open('/.github/workflows/config.json') as json_file:
+    with open('config.json') as json_file:
         data=json.load(json_file)
 
     google_api_key=data['google_api_key']
