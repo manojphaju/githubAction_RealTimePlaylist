@@ -19,13 +19,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
+        with:
+          python-version: '3.9.10'
+
       - name: Run Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install fastavro
           pip install confluent-kafka
           pip install requests
+      
+      - name: Make script executable
+        run: chmod +x youtube.py
+
       - name: Build and Publish - Real Time Streaming
         run: 
           python .github/workflows/youtube.py
