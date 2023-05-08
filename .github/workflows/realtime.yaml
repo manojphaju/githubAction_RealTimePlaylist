@@ -17,8 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run Dependencies
-        run: pip install confluent_kafka
-        run: pip install fastavro
+        run: pip install confluent_kafka, fastavro
       - name: Real Time Streaming
         run: python .github/workflows/youtube.py
 
