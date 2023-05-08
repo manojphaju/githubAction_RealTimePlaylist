@@ -30,7 +30,7 @@ jobs:
           pip install requests
       
       - name: Make script executable
-        run: chmod +x python .github/workflows/youtube.py
+        run: chmod +x .github/workflows/youtube.py
 
       - name: Build and Publish - Real Time Streaming
         run: 
