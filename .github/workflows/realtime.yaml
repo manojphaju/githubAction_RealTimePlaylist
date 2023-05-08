@@ -22,6 +22,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install fastavro
           pip install confluent-kafka
+          pip install requests
       - name: Build and Publish - Real Time Streaming
         run: python .github/workflows/youtube.py
 
