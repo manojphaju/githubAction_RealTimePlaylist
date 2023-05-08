@@ -2,7 +2,7 @@ name: Real Time Streamming - Youtube Playlist
 
 on:
   schedule:
-    - cron: '2 * * * *'
+    - cron: 2 * * * *
   pull_request:
     branches:
       - main
