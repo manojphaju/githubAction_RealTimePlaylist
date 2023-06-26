@@ -9,9 +9,11 @@ from confluent_kafka.schema_registry.avro import AvroSerializer
 import requests
 import json 
 
+baseURL = 'https://www.googleapis.com/youtube/v3/'
 
+# page_token - getting the data per page
 def fetch_playlist_items_page(google_api_key,youtube_playlist_id, page_token=None):
-    response = requests.get("https://www.googleapis.com/youtube/v3/playlistItems", params={
+    response = requests.get(baseURL + "playlistItems", params={
     "key":google_api_key,
     "playlistId":youtube_playlist_id,
     "part":"contentDetails",
@@ -23,7 +25,7 @@ def fetch_playlist_items_page(google_api_key,youtube_playlist_id, page_token=Non
     return payload
 
 def fetch_videos_page(google_api_key,video_id, page_token=None):
-    response = requests.get("https://www.googleapis.com/youtube/v3/videos", params={
+    response = requests.get(baseURL + "videos", params={
     "key":google_api_key,
     "id":video_id,
     # "part":"contentDetails",
@@ -39,7 +41,8 @@ def fetch_videos_page(google_api_key,video_id, page_token=None):
 def fetch_playlist_items(google_api_key,youtube_playlist_id, page_token=None):
     #fetch one page
     payload = fetch_playlist_items_page(google_api_key,youtube_playlist_id,page_token)
-    #Handling generator
+    # Handling generator using yield function
+    # yield function gives the every infomation available on each page
     yield from payload["items"]
 
     next_page_token=payload.get("nextPageToken")
@@ -54,9 +57,9 @@ def fetch_videos(google_api_key,youtube_playlist_id, page_token=None):
     payload = fetch_videos_page(google_api_key,youtube_playlist_id,page_token)
     #Handling generator
     yield from payload["items"]
-
+    # making nextPageToken optional for last page
     next_page_token=payload.get("nextPageToken")
-
+    # recursive call function
     if next_page_token is not None:
         yield from fetch_videos(google_api_key,youtube_playlist_id, next_page_token)
 
@@ -76,8 +79,8 @@ def on_delivery(err, record):
 def main():
     logging.info("START")
 
-
-    
+    # with open('config.json') as json_file:
+    #     data=json.load(json_file)
 
     with open('.github/workflows/config.json') as json_file:
         data=json.load(json_file)
@@ -87,11 +90,10 @@ def main():
 
 
     schema_registry_client = SchemaRegistryClient(data["schema_registry"])
-    youtube_videos_value_schema=schema_registry_client.get_latest_version("MY_PLAYLIST-value")
+    youtube_videos_value_schema=schema_registry_client.get_latest_version("youtube_videos-value")
 
     kafka_config= data["kafka"] | {
         "key.serializer": StringSerializer(), 
-        #pip install fastavro notworking
         "value.serializer": AvroSerializer(schema_registry_client,youtube_videos_value_schema.schema.schema_str)
     }
     producer= SerializingProducer(kafka_config)
@@ -103,7 +105,7 @@ def main():
 
             #kafka
             producer.produce(
-                topic="MY_PLAYLIST",
+                topic="youtube_videos",
                 key=video_id,
                 value={
                     "TITLE": video["snippet"]["title"],
