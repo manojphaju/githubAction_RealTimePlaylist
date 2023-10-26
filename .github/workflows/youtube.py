@@ -102,8 +102,8 @@ def main():
         video_id=video_item["contentDetails"]["videoId"]
         for video in fetch_videos(google_api_key,video_id):
             logging.info("GOT %s", pformat(summarize_video(video)))
-
-            #kafka
+        
+         #kafka
             producer.produce(
                 topic="youtube_videos",
                 key=video_id,
@@ -115,6 +115,8 @@ def main():
                 },
                 on_delivery=on_delivery,
             )
+
+        
     producer.flush()
 
     
