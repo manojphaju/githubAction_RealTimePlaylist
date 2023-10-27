@@ -1,0 +1,17 @@
+{
+    "google_api_key":"AIzaSyCuhy7sIXnexLAlHiRiHmltgJ5WyJonto8",
+    "youtube_playlist_id":"PLeWq7zyhx03ejMCBZTBNQPWP1Iu68vaFT",
+    "kafka":{
+        "bootstrap.servers": "pkc-l6wr6.europe-west2.gcp.confluent.cloud:9092",
+        "security.protocol": "sasl_ssl",
+        "sasl.mechanism": "PLAIN",
+        "sasl.username": "BMUHA3SQ7BLDWAAH",
+        "sasl.password": "OMMQSTDYt8ztvNt9Hf+SSwXKJTeHqetI5hzl97elGISY3MLmMl8yZ72DgKS5YUif"
+    },
+    "schema_registry":{
+        "url": "https://psrc-mvkrw.europe-west3.gcp.confluent.cloud", 
+        "basic.auth.user.info": "V6OWBBYI2F5KC5CA:mMFS9j/e6LS96JezeicT0hqn2ThapEg0mOiyHZzJppUJgEb0AJIEJ9PArgBkyPd5"
+
+    }
+ }
+ 
