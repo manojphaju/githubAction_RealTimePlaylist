@@ -115,7 +115,6 @@ def main():
                 },
                 on_delivery=on_delivery,
             )
-        
     producer.flush()
 
     
