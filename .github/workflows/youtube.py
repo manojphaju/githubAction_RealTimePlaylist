@@ -117,7 +117,6 @@ def main():
             )
     producer.flush()
 
-    
 
 
 if __name__== "__main__":
